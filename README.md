@@ -1,8 +1,37 @@
-# About
+# Fork-choice
+Implemented based on the [forkchoice.md](https://github.com/leanEthereum/leanSpec/blob/main/docs/client/forkchoice.md) client spec.
 
-This repository contains our implementation of fork-choice based off the *Lean-Ethereum* outline for the client as found in their repository at [forkchoice.md](https://github.com/leanEthereum/leanSpec/blob/main/docs/client/forkchoice.md) and follows the outline given by the project for fork-choice as seen in the [forkchoice](https://github.com/leanEthereum/leanSpec/tree/main/src/lean_spec/subspecs/forkchoice) section of the repository.
+Tests taken from the [testing part of the repository](https://github.com/leanEthereum/leanSpec/tree/main/tests/lean_spec/subspecs/forkchoice).
 
-# Testing
 
-Tests will be performed based off the tests found in the leanEthereum repository [tests](https://github.com/leanEthereum/leanSpec/tree/main/tests/lean_spec/subspecs/forkchoice) section and also fork-choice tests outlined in [eth2.0](https://github.com/txrx-research/eth2.0-spec-tests/tree/fork_choice_integration_tests/tests/minimal/phase0/fork_choice/integration_tests).
+# About our implementation fork-choice
+
+## Helpers
+
+`get_fork_choice_head`
+
+`get_latest_justified`
+
+`Store`
+
+`get_forkchoice_store`
+
+`update_head`
+
+`update_safe_target`
+
+`get_vote_target`
+
+`accept_new_votes`
+
+`tick_interval`
+
+`get_proposal_head`
+
+## Handlers
+`on_tick`
+
+`on_attestation`
+
+`on_block`
 
