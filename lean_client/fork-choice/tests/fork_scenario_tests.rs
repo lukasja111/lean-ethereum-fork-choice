@@ -1,5 +1,3 @@
-//! Fork choice tests with multiple competing chains
-
 use std::collections::HashMap;
 use containers::*;
 use containers::block::hash_tree_root;
@@ -10,11 +8,8 @@ use pretty_assertions::assert_eq;
 mod common;
 use common::*;
 
-/// Test fork choice algorithm with competing forks
 #[test]
 fn test_fork_choice_with_multiple_forks() {
-    // Create a fork structure: genesis -> A -> B
-    //                                  -> C -> D
     let genesis = create_block(
         0, 0, zero_hash(),
         b"genesis\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
@@ -55,7 +50,6 @@ fn test_fork_choice_with_multiple_forks() {
         (block_d_hash, block_d),
     ]);
 
-    // More votes for fork 2 (C->D)
     let mut votes = HashMap::new();
     votes.insert(ValidatorId(ValidatorIndex(0)), create_checkpoint(block_d_hash, 2));
     votes.insert(ValidatorId(ValidatorIndex(1)), create_checkpoint(block_d_hash, 2));
@@ -67,10 +61,8 @@ fn test_fork_choice_with_multiple_forks() {
     assert_eq!(head, block_d_hash);
 }
 
-/// Test that votes for ancestors are properly counted
 #[test]
 fn test_fork_choice_ancestor_votes() {
-    // Create chain: genesis -> A -> B -> C
     let genesis = create_block(
         0, 0, zero_hash(),
         b"genesis\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
@@ -112,7 +104,6 @@ fn test_fork_choice_ancestor_votes() {
     assert_eq!(head, block_c_hash);
 }
 
-/// Test fork choice algorithm with a deeper chain
 #[test]
 fn test_fork_choice_deep_chain() {
     let mut blocks = HashMap::new();

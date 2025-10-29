@@ -1,10 +1,3 @@
 [workspace]
-members = ["chain", "containers", "fork-choice"]
+members = ["fork-choice"]
 resolver = "2"
-
-[package]
-name = "lean_client"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]

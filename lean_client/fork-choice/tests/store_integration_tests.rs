@@ -1,5 +1,3 @@
-//! Store integration tests for fork choice
-
 use containers::*;
 use containers::block::hash_tree_root;
 use fork_choice::*;
@@ -9,7 +7,6 @@ use pretty_assertions::assert_eq;
 mod common;
 use common::*;
 
-/// Test Store.get_proposal_head with no votes
 #[test]
 fn test_store_fork_choice_no_votes() {
     let config = test_config();
@@ -35,7 +32,6 @@ fn test_store_fork_choice_no_votes() {
     assert_eq!(head, store.head);
 }
 
-/// Test Store with block processing
 #[test]
 fn test_store_block_processing() {
     let config = test_config();
@@ -71,7 +67,6 @@ fn test_store_block_processing() {
     assert_eq!(store.head, new_block_hash);
 }
 
-/// Test Store with attestation processing
 #[test]
 fn test_store_attestation_processing() {
     let config = test_config();
@@ -127,7 +122,6 @@ fn test_store_attestation_processing() {
     assert!(store.latest_new_votes.contains_key(&ValidatorId(ValidatorIndex(0))));
 }
 
-/// Test Store timing and intervals
 #[test]
 fn test_store_timing() {
     let config = test_config();

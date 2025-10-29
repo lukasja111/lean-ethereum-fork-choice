@@ -5,7 +5,6 @@ use containers::config::Config as ContainerConfig;
 use containers::block::hash_tree_root;
 use crate::helpers::*;
 
-/// Wrapper for ValidatorIndex to add Hash implementation
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct ValidatorId(pub ValidatorIndex);
 
@@ -27,7 +26,6 @@ impl From<ValidatorId> for ValidatorIndex {
     }
 }
 
-/// Fork choice specific configuration
 #[derive(Clone, Debug)]
 pub struct ForkChoiceConfig {
     pub genesis_time: u64,
@@ -47,33 +45,22 @@ impl From<&ContainerConfig> for ForkChoiceConfig {
     }
 }
 
-/// The fork choice store maintains all the state needed for the fork choice algorithm
 #[derive(Debug, Clone)]
 pub struct Store {
-    /// Current time in intervals since genesis
     pub time: u64,
-    /// Protocol configuration
     pub config: ForkChoiceConfig,
-    /// Current head of the canonical chain
     pub head: Bytes32,
-    /// Safe target for validators to vote on
     pub safe_target: Bytes32,
-    /// Latest justified checkpoint
     pub latest_justified: Checkpoint,
-    /// Latest finalized checkpoint
     pub latest_finalized: Checkpoint,
-    /// All known blocks indexed by their hash
     pub blocks: HashMap<Bytes32, Block>,
-    /// All known states indexed by block hash
     pub states: HashMap<Bytes32, State>,
-    /// Latest known votes from validators
     pub latest_known_votes: HashMap<ValidatorId, Checkpoint>,
-    /// New votes that haven't been processed yet
     pub latest_new_votes: HashMap<ValidatorId, Checkpoint>,
 }
 
 impl Store {
-    /// Create a new fork choice store anchored at the given block and state
+    /// Create a new fork choice store anchored at the provided block and state.
     pub fn new(anchor_state: State, anchor_block: Block, config: ContainerConfig) -> Self {
         let block_root = hash_tree_root(&anchor_block);
         let fork_choice_config = ForkChoiceConfig::from(&config);
@@ -93,7 +80,10 @@ impl Store {
         }
     }
 
-    /// Get the proposal head for a given slot
+    /// Advance the store to produce a proposal head for the requested slot.
+    /// This advances the internal time to the start of `slot`, runs the
+    /// appropriate on-tick processing, accepts pending votes and returns the
+    /// current head.
     pub fn get_proposal_head(&mut self, slot: Slot) -> Bytes32 {
         let slot_time = self.config.genesis_time + (slot.0 * self.config.seconds_per_slot);
         crate::handlers::on_tick(self, slot_time, true);

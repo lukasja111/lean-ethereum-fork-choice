@@ -1,5 +1,3 @@
-//! Basic LMD-GHOST fork choice algorithm tests
-
 use std::collections::HashMap;
 use containers::*;
 use containers::block::hash_tree_root;
@@ -10,7 +8,6 @@ use pretty_assertions::assert_eq;
 mod common;
 use common::*;
 
-/// Test fork choice algorithm with no votes
 #[test]
 fn test_fork_choice_no_votes() {
     let sample_blocks = create_sample_blocks();
@@ -35,7 +32,6 @@ fn test_fork_choice_no_votes() {
     assert_eq!(head, *expected_head);
 }
 
-/// Test fork choice algorithm with a single vote
 #[test]
 fn test_fork_choice_single_vote() {
     let sample_blocks = create_sample_blocks();
@@ -61,7 +57,6 @@ fn test_fork_choice_single_vote() {
     assert_eq!(head, target_hash);
 }
 
-/// Test fork choice algorithm tie-breaking mechanism
 #[test]
 fn test_fork_choice_tie_breaking() {
     let genesis = create_block(
@@ -100,7 +95,6 @@ fn test_fork_choice_tie_breaking() {
     assert_eq!(head, head2);
 }
 
-/// Test fork choice algorithm with competing votes
 #[test]
 fn test_fork_choice_competing_votes() {
     // Create simple fork: genesis -> A
@@ -140,7 +134,6 @@ fn test_fork_choice_competing_votes() {
     assert!(head == block_a_hash || head == block_b_hash);
 }
 
-/// Test fork choice algorithm with minimum score threshold
 #[test]
 fn test_fork_choice_with_min_score() {
     let genesis = create_block(
